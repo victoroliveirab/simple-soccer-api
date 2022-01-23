@@ -2,6 +2,6 @@
 __pycache__/
 /venv
 *.txt
-main.py
+*.log
 /lib/parsers/
 /dev/mongo-docker/
