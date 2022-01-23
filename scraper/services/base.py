@@ -21,13 +21,13 @@ class BaseService(ABC):
 
     def _create_one(self, obj):
         obj = add_datetime_to_object(obj)
-        doc = Db.conn[self.name].insert_one(obj)
+        doc = Db.conn[self.plural_name].insert_one(obj)
         obj[self.ID_FIELD] = doc.inserted_id
         return obj
 
     def _create_bulk(self, objs):
         objs = list(add_datetime_to_object(obj) for obj in objs)
-        docs = Db.conn[self.name].insert_many(objs)
+        docs = Db.conn[self.plural_name].insert_many(objs)
         for _id, obj in zip(docs.inserted_ids, objs):
             obj[self.ID_FIELD] = _id
         return objs
@@ -39,7 +39,7 @@ class BaseService(ABC):
     def delete(self, params, return_orig=True):
         if return_orig:
             return self.find_one_and_delete(params)
-        return Db.conn[self.name].delete_one(params)
+        return Db.conn[self.plural_name].delete_one(params)
 
     def delete_by_id(self, _id, return_orig=True):
         if return_orig:
@@ -56,36 +56,37 @@ class BaseService(ABC):
         return self.delete({self.NAME_FIELD: name})
 
     def delete_many(self, params):
-        return Db.conn[self.name].delete_many(params)
+        return Db.conn[self.plural_name].delete_many(params)
 
-    def find(self, params, many=False):
-        if many:
-            return Db.conn[self.name].find(params)
-        return Db.conn[self.name].find_one(params)
+    def find_one(self, params):
+        return Db.conn[self.plural_name].find_one(params)
+
+    def find(self, params):
+        return list(Db.conn[self.plural_name].find(params))
 
     def find_all(self):
-        return Db.conn[self.name].find({})
+        return list(Db.conn[self.plural_name].find({}))
 
-    def find_by_id(self, _id):
-        return self.find({self.ID_FIELD: id_as_object_id(_id)})
+    def find_one_by_id(self, _id):
+        return self.find_one({self.ID_FIELD: id_as_object_id(_id)})
 
-    def find_by_name(self, name):
-        return self.find({self.NAME_FIELD: name})
+    def find_one_by_name(self, name):
+        return self.find_one({self.NAME_FIELD: name})
 
     def find_one_and_update(self, query, params):
         params = register_update_to_query(params)
-        return Db.conn[self.name].find_one_and_update(
+        return Db.conn[self.plural_name].find_one_and_update(
             query, params, return_document=True
         )
 
     def find_one_and_delete(self, query):
-        return Db.conn[self.name].find_one_and_delete(query)
+        return Db.conn[self.plural_name].find_one_and_delete(query)
 
     def update(self, query, params, return_orig=True):
         params = register_update_to_query(params)
         if return_orig:
             return self.find_one_and_update(query, params)
-        return Db.conn[self.name].update_one(query, params)
+        return Db.conn[self.plural_name].update_one(query, params)
 
     def update_by_id(self, _id, params, return_orig=True):
         if return_orig:
@@ -102,4 +103,4 @@ class BaseService(ABC):
         return self.update({self.NAME_FIELD: name}, params)
 
     def update_many(self, query, params):
-        return Db.conn[self.name].update_many(query, params)
+        return list(Db.conn[self.plural_name].update_many(query, params))
