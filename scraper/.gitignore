@@ -1,7 +1,7 @@
 .idea/
 __pycache__/
 /venv
-*.txt
+*.html
 *.log
 /lib/parsers/
 /dev/mongo-docker/
