@@ -1,5 +1,5 @@
-from base import BaseService
-from country import CountryService
+from services.base import BaseService
+from services import CountryService
 
 
 class TournamentService(BaseService):
@@ -45,3 +45,6 @@ class TournamentService(BaseService):
         self._delete_tournament_of_country(tournament)
 
         return tournament
+
+
+TournamentServiceSingleton = TournamentService()

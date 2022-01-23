@@ -1,4 +1,4 @@
-from base import BaseService
+from services.base import BaseService
 from lib.enums import MatchStatus
 # TODO: create index by teams and tournament
 
@@ -11,8 +11,8 @@ class MatchService(BaseService):
         home_team = info['home_team']
         away_team = info['away_team']
         tournament = info['tournament']
-        match_time = info['time']
-        status = MatchStatus.NOT_STARTED
+        match_datetime = info['datetime']
+        status = str(MatchStatus.NOT_STARTED)
 
         super().create({
             'home': home_team,
@@ -20,7 +20,7 @@ class MatchService(BaseService):
             'home_goals': 0,
             'away_goals': 0,
             'tournament': tournament,
-            'time': match_time,
+            'datetime': match_datetime,
             'status': status,
             'elapsed': 0
         })
@@ -38,3 +38,6 @@ class MatchService(BaseService):
             'home_goals': home_goals,
             'away_goals': away_goals
         }, return_orig=return_orig)
+
+
+MatchServiceSingleton = MatchService()

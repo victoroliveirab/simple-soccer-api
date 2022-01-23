@@ -1,4 +1,4 @@
-from base import BaseService
+from services.base import BaseService
 from utils import id_as_object_id
 
 
@@ -31,3 +31,4 @@ class CountryService(BaseService):
         })
 
 
+CountryServiceSingleton = CountryService()
