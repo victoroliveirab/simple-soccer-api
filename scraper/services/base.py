@@ -2,7 +2,7 @@ from abc import ABC
 
 from lib.db import Db
 from utils import add_datetime_to_object, id_as_object_id, \
-    register_update_to_object
+    register_update_to_query
 
 
 class BaseService(ABC):
@@ -73,7 +73,7 @@ class BaseService(ABC):
         return self.find({self.NAME_FIELD: name})
 
     def find_one_and_update(self, query, params):
-        params = register_update_to_object(params)
+        params = register_update_to_query(params)
         return Db.conn[self.name].find_one_and_update(
             query, params, return_document=True
         )
@@ -82,7 +82,7 @@ class BaseService(ABC):
         return Db.conn[self.name].find_one_and_delete(query)
 
     def update(self, query, params, return_orig=True):
-        params = register_update_to_object(params)
+        params = register_update_to_query(params)
         if return_orig:
             return self.find_one_and_update(query, params)
         return Db.conn[self.name].update_one(query, params)
