@@ -4,4 +4,4 @@ __pycache__/
 *.html
 *.log
 /lib/parsers/
-/dev/mongo-docker/
+/db/dev/mongo-docker/
