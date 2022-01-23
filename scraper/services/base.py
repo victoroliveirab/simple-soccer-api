@@ -36,20 +36,20 @@ class BaseService(ABC):
         return self._create_bulk(info) if type(info) is list \
             else self._create_one(info)
 
-    def delete(self, params, return_orig=True):
-        if return_orig:
+    def delete(self, params, return_obj=True):
+        if return_obj:
             return self.find_one_and_delete(params)
         return Db.conn[self.plural_name].delete_one(params)
 
-    def delete_by_id(self, _id, return_orig=True):
-        if return_orig:
+    def delete_by_id(self, _id, return_obj=True):
+        if return_obj:
             return self.find_one_and_delete({
                 self.ID_FIELD: _id
             })
         return self.delete({self.ID_FIELD: id_as_object_id(_id)})
 
-    def delete_by_name(self, name, return_orig=True):
-        if return_orig:
+    def delete_by_name(self, name, return_obj=True):
+        if return_obj:
             return self.find_one_and_delete({
                 self.NAME_FIELD: name
             })
@@ -82,21 +82,21 @@ class BaseService(ABC):
     def find_one_and_delete(self, query):
         return Db.conn[self.plural_name].find_one_and_delete(query)
 
-    def update(self, query, params, return_orig=True):
+    def update(self, query, params, return_obj=True):
         params = register_update_to_query(params)
-        if return_orig:
+        if return_obj:
             return self.find_one_and_update(query, params)
         return Db.conn[self.plural_name].update_one(query, params)
 
-    def update_by_id(self, _id, params, return_orig=True):
-        if return_orig:
+    def update_by_id(self, _id, params, return_obj=True):
+        if return_obj:
             return self.find_one_and_update({
                 self.ID_FIELD: id_as_object_id(_id)
             }, params)
         return self.update({self.ID_FIELD, id_as_object_id(_id)}, params)
 
-    def update_by_name(self, name, params, return_orig=True):
-        if return_orig:
+    def update_by_name(self, name, params, return_obj=True):
+        if return_obj:
             return self.find_one_and_update({
                 self.NAME_FIELD: name
             }, params)

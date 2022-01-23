@@ -25,19 +25,19 @@ class MatchService(BaseService):
             'elapsed': 0
         })
 
-    def update_status_by_id(self, _id, status, return_orig=True):
+    def update_status_by_id(self, _id, status, return_obj=True):
         return super().update_by_id(_id, {
             'status': status
-        }, return_orig=return_orig)
+        }, return_obj=return_obj)
 
-    def update_score_by_id(self, _id, score, return_orig=True):
+    def update_score_by_id(self, _id, score, return_obj=True):
         home_goals = score['home']
         away_goals = score['away']
 
         return super().update_by_id(_id, {
             'home_goals': home_goals,
             'away_goals': away_goals
-        }, return_orig=return_orig)
+        }, return_obj=return_obj)
 
 
 MatchServiceSingleton = MatchService()

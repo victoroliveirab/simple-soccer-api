@@ -32,15 +32,15 @@ class TournamentService(BaseService):
 
         return tournament
 
-    def delete_by_id(self, _id, _=True):
-        tournament = super().delete_by_id(_id, return_orig=True)
+    def delete_by_id(self, _id, return_obj=True):
+        tournament = super().delete_by_id(_id, return_obj=return_obj)
 
         self._delete_tournament_of_country(tournament)
 
         return tournament
 
-    def delete_by_name(self, name, _=True):
-        tournament = super().delete_by_name(name, return_orig=True)
+    def delete_by_name(self, name, return_obj=True):
+        tournament = super().delete_by_name(name, return_obj=return_obj)
 
         self._delete_tournament_of_country(tournament)
 
