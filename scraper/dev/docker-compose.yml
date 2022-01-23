@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  mongo:
+    image: mongo
+    container_name: scraper-dev
+    environment:
+      - MONGO_INITDB_DATABASE=scraper-dev
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+    volumes:
+      - ./init.js:/docker-entrypoint-initdb.d/init.js:ro
+      - ./mongo-docker:/data/db
+    ports:
+      - '27017-27019:27017-27019'
+    restart: unless-stopped
+    networks:
+      - mongo-compose-network
+networks:
+  mongo-compose-network:
+    driver: bridge

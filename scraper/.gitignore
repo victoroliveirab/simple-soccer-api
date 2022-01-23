@@ -1,0 +1,7 @@
+.idea/
+__pycache__/
+/venv
+*.txt
+main.py
+/lib/parsers/
+/dev/mongo-docker/
